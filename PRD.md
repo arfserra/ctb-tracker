@@ -7,22 +7,22 @@
 Establish the foundational structure and tools for the exercise tracker mobile web app.  
 
 **Requirements:**  
-- Use **Svelte** as the framework for the web app.  
+- Use **Vanilla JavaScript** as the framework for the web app.  
 - Include **Supabase** for cloud storage and authentication.  
-- Use **SvelteKit** for routing and server-side rendering.  
+- Use **Tailwind CSS** for styling.  
 - Add **environment variables** for storing Supabase credentials securely.
 
 **Deliverables:**  
-1. A Svelte project scaffolded using `npm create svelte@latest`.  
+1. A project initialized with a basic HTML, CSS, and JavaScript setup.  
 2. A `supabaseClient.js` file that initializes the Supabase client with the project's URL and anon key.  
 3. A structured folder setup:
-   - `/src/components/` for reusable components.
-   - `/src/routes/` for page-level views (e.g., Dashboard, AddExercise).
-   - `/src/lib/` for utility/helper functions.
-   - `/src/assets/` for static files (e.g., images and styles).
+   - `/components/` for reusable JavaScript components.
+   - `/pages/` for HTML templates or primary views (e.g., Dashboard, AddExercise).
+   - `/assets/` for static files (e.g., styles, images).
+   - `/utils/` for utility/helper functions.
 
 **Prompt for Copilot:**  
-"Set up a SvelteKit project for a mobile web app. Install `@supabase/supabase-js` and configure Supabase in a `supabaseClient.js` file using environment variables. Organize folders as `components`, `routes`, `lib`, and `assets` for scalability."
+"Set up a project using Vanilla JavaScript with Tailwind CSS for styling. Install `@supabase/supabase-js` and configure Supabase in a `supabaseClient.js` file using environment variables. Organize folders as `components`, `pages`, `assets`, and `utils` for scalability."
 
 ---
 
@@ -48,12 +48,13 @@ Allow users to create exercises with relevant details, including an optional ima
   - Validate image size (<2 MB) and type (JPEG, PNG).
 
 ### Deliverables  
-1. A Svelte component called `AddExercise.svelte` with a form for the above fields.  
-2. Functionality to upload images to the storage bucket and link their URL to the exercise.  
-3. Form validation for required fields and image constraints.  
+1. A JavaScript file (`addExercise.js`) for handling form submission and integrating with Supabase.  
+2. An HTML template (`addExercise.html`) containing the form structure styled with Tailwind CSS.  
+3. Functionality to upload images to the storage bucket and link their URL to the exercise.  
+4. Form validation for required fields and image constraints.  
 
 **Prompt for Copilot:**  
-"Create a Svelte component `AddExercise.svelte` with a form to add exercises. Include fields for name, type (dropdown), description, and an image upload. Save the data to the Supabase `exercises` table, upload the image to the `exercise-images` bucket, and store the URL in the database. Validate required fields and ensure the image size is under 2 MB."
+"Create an HTML form styled with Tailwind CSS for adding exercises. Use Vanilla JavaScript to handle form submissions, validate input fields, and save exercise data to the Supabase `exercises` table. Implement image uploads to the `exercise-images` bucket and store the URL in the database."
 
 ---
 
@@ -73,11 +74,12 @@ Enable users to view all created exercises in a clean and mobile-friendly interf
   - Ensure responsiveness for mobile devices.  
 
 ### Deliverables  
-1. A Svelte component called `ViewExercises.svelte` that fetches and displays all exercises.  
-2. Exercises should be displayed in a card layout, showing the name, type, description, and image.  
+1. A JavaScript file (`viewExercises.js`) for fetching and displaying exercise data.  
+2. An HTML template (`viewExercises.html`) containing a grid layout styled with Tailwind CSS.  
+3. Exercises displayed in a card format showing the name, type, description, and image.  
 
 **Prompt for Copilot:**  
-"Create a Svelte component `ViewExercises.svelte` to fetch and display all exercises from the Supabase `exercises` table. Show each exercise in a responsive card layout with the name, type, description, and image."
+"Create an HTML page styled with Tailwind CSS to display exercises in a responsive grid. Use Vanilla JavaScript to fetch exercise data from the Supabase `exercises` table and populate the grid dynamically with cards showing the exercise name, type, description, and image."
 
 ---
 
@@ -100,12 +102,13 @@ Allow users to log workout sessions by selecting an exercise and tracking repeti
   - Ensure repetitions and weight are positive numbers.
 
 ### Deliverables  
-1. A Svelte component called `LogWorkout.svelte` with a form for the above fields.  
-2. Dropdown dynamically populated with exercises from Supabase.  
-3. Logs saved to the `workout_logs` table with a timestamp.
+1. A JavaScript file (`logWorkout.js`) for handling form submission and integrating with Supabase.  
+2. An HTML template (`logWorkout.html`) containing the form structure styled with Tailwind CSS.  
+3. Dropdown dynamically populated with exercises from Supabase.  
+4. Logs saved to the `workout_logs` table with a timestamp.
 
 **Prompt for Copilot:**  
-"Create a Svelte component `LogWorkout.svelte` with a form to log workouts. Include a dropdown populated from the Supabase `exercises` table, fields for repetitions (integer), weight (float), and optional notes. Save the log to the `workout_logs` table with the current timestamp."
+"Create an HTML form styled with Tailwind CSS for logging workouts. Use Vanilla JavaScript to populate a dropdown with exercises from the Supabase `exercises` table, validate input fields, and save workout data to the `workout_logs` table."
 
 ---
 
@@ -128,11 +131,15 @@ Provide users with an overview of their logged workouts and progress trends.
   - Aggregate data for charts (e.g., group logs by week and exercise).  
 
 ### Deliverables  
-1. A Svelte component called `Dashboard.svelte` with the latest logs and visualizations.  
-2. Use a charting library (e.g., ApexCharts or Chart.js) for bar and line charts.  
+1. A JavaScript file (`dashboard.js`) for fetching and displaying workout data.  
+2. An HTML template (`dashboard.html`) containing a summary view styled with Tailwind CSS.  
+3. Charts implemented using a library like Chart.js.  
 
 **Prompt for Copilot:**  
-"Create a Svelte component `Dashboard.svelte` for a workout summary. Fetch workout logs from the `workout_logs` table in Supabase. Display the latest logs in a list and include a bar chart for weekly repetitions per exercise and a line chart for weight progression over time."
+"Create an HTML page styled with Tailwind CSS to display a workout summary dashboard. Use Vanilla JavaScript to fetch workout data from the Supabase `workout_logs` table and display:
+- A list of recent workouts.
+- A bar chart for weekly repetitions per exercise.
+- A line chart for weight progression over time."
 
 ---
 
@@ -151,11 +158,12 @@ Enable users to update or delete an existing exercise.
   - Delete the associated image from the `exercise-images` bucket.  
 
 ### Deliverables  
-1. A Svelte component or modal for editing exercises.  
-2. Delete functionality with a confirmation step.  
+1. A JavaScript file (`editDeleteExercise.js`) for handling edit and delete operations.  
+2. An HTML template (`editDeleteExercise.html`) containing the interface styled with Tailwind CSS.  
+3. Confirmation dialog for delete operations.  
 
 **Prompt for Copilot:**  
-"Create functionality to edit or delete exercises in Svelte. Allow users to update fields like name, type, description, and image. Replace the old image in Supabase storage when uploading a new one. For deletion, remove the exercise from the `exercises` table and its image from the `exercise-images` bucket."
+"Create an HTML page styled with Tailwind CSS for editing or deleting exercises. Use Vanilla JavaScript to update exercise data in the Supabase `exercises` table or delete an exercise and its image from the storage bucket. Include a confirmation dialog for deletions."
 
 ---
 
@@ -172,8 +180,9 @@ Allow users to log in and sync their data securely.
   - Persist user sessions using Supabase's built-in session handling.  
 
 ### Deliverables  
-1. A Svelte component for login/signup forms.  
-2. Authentication state management to protect routes like `LogWorkout` and `Dashboard`.
+1. A JavaScript file (`auth.js`) for handling user authentication.  
+2. HTML templates (`login.html`, `signup.html`) containing forms styled with Tailwind CSS.  
+3. Authentication state management for protected routes.
 
 **Prompt for Copilot:**  
-"Create an authentication flow in Svelte using Supabase. Implement email/password signup and login, and use Supabase's session management to maintain login state. Protect app routes based on user authentication status."
+"Create HTML forms styled with Tailwind CSS for user signup and login. Use Vanilla JavaScript to handle authentication with Supabase, manage user sessions, and protect specific routes."
