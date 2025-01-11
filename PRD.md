@@ -67,6 +67,59 @@ Allow users to log workouts consisting of multiple exercises. Each exercise can 
 
 ---
 
+## Database Schema (Markdown for Copilot Reference)
+
+### **1. `workout_logs` Table**
+Tracks the overall workout session.
+
+| Column      | Type      | Notes                      |
+|-------------|-----------|----------------------------|
+| `id`        | UUID      | Primary key, auto-generated. |
+| `notes`     | Text      | Optional notes.            |
+| `created_at`| Timestamp | Default: `now()`.          |
+
+---
+
+### **2. `workout_exercises` Table**
+Associates exercises with a workout.
+
+| Column         | Type      | Notes                           |
+|----------------|-----------|---------------------------------|
+| `id`           | UUID      | Primary key, auto-generated.    |
+| `workout_id`   | UUID      | Foreign key to `workouts.id`.   |
+| `exercise_id`  | UUID      | Foreign key to `exercises.id`.  |
+| `weight`       | Float     | Weight used for the exercise.   |
+| `notes`        | Text      | Optional notes for the exercise. |
+| `created_at`   | Timestamp | Default: `now()`.               |
+
+---
+
+### **3. `series` Table**
+Tracks the series (sets) for each exercise in a workout.
+
+| Column         | Type      | Notes                            |
+|----------------|-----------|----------------------------------|
+| `id`           | UUID      | Primary key, auto-generated.     |
+| `workout_exercise_id` | UUID | Foreign key to `workout_exercises.id`. |
+| `repetition_count` | Integer | Number of repetitions in the series. |
+| `created_at`   | Timestamp | Default: `now()`.                |
+
+---
+
+### **4. `exercises` Table**
+Stores the predefined list of exercises.
+
+| Column      | Type      | Notes                           |
+|-------------|-----------|---------------------------------|
+| `id`        | UUID      | Primary key, auto-generated.    |
+| `name`      | Text      | Name of the exercise (e.g., "Squat"). |
+| `type`      | Text      | Type of exercise (e.g., Strength, Cardio, Mobility). |
+| `description` | Text     | Optional description of the exercise. |
+| `image_url` | Text      | URL of the exercise image, if any. |
+| `created_at`| Timestamp | Default: `now()`.               |
+
+---
+
 ## Feature: Add Exercise
 
 ### Objective  
@@ -164,8 +217,4 @@ Enable users to update or delete an existing workout, its exercises, or their se
   - Remove an exercise and its series from a workout.  
 
 ### Deliverables  
-1. A Streamlit page (`edit_delete_workout.py`) for handling edit and delete operations.  
-2. Confirmation dialog for delete operations.  
-
-**Prompt for Copilot:**  
-"Create a Streamlit page to edit or delete workouts and their associated exercises or series. Include inputs to update fields and provide confirmation dialogs for deletions. Use Python to update or delete data in the `workouts`, `workout_exercises`, and `series` tables."
+1. A Streamlit page (`edit_delete_workout.py`) for handling edit and delete operations. 
