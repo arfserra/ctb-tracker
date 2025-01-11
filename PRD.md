@@ -73,7 +73,7 @@ Enable users to view all created exercises in a simple interface.
 2. Exercises displayed in a card or table format showing the name, type, description, and image.  
 
 **Prompt for Copilot:**  
-"Create a Streamlit page to view exercises. Fetch data from the Supabase `exercises` table and display it in a table or card format with exercise name, type, description, and image."
+"Create a Streamlit page to view exercises. Fetch data from the Supabase `exercises` table and display it in a table or card format with exercise name, type, description, and day."
 
 ---
 
