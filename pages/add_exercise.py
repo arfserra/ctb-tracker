@@ -36,9 +36,7 @@ def main():
                 st.success('Exercise added successfully!')
                 # Clear form using session state
                 st.session_state.name = ''
-                st.session_state.type = ''
                 st.session_state.description = ''
-                st.experimental_rerun()
 
             except Exception as e:
                 st.error(f'An error occurred: {str(e)}')
