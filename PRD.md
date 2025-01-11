@@ -25,10 +25,52 @@ Establish the foundational structure and tools for the exercise tracker web app 
 
 ---
 
+## Feature: Workouts Containing Multiple Exercises with Series
+
+### Objective  
+Allow users to log workouts consisting of multiple exercises. Each exercise can have multiple series (sets) with repetitions and associated weights.
+
+### Requirements  
+- **Hierarchy:**
+  - A workout groups multiple exercises.
+  - Each exercise within a workout can contain multiple series.
+
+- **Input Fields:**  
+  - **Workout Details:**
+    - Name (optional, e.g., "Leg Day").
+    - Date (required).
+    - Notes (optional).
+  - **Exercise Details:**
+    - Exercise Name (selected from predefined list).
+    - Weight (per exercise, optional).
+    - Notes (optional).
+  - **Series Details:**
+    - Repetitions (integer, required).
+
+- **Backend Integration:**  
+  - Store workouts in the `workouts` table.
+  - Associate exercises with workouts in the `workout_exercises` table.
+  - Track series (sets) for each exercise in the `series` table.
+
+### Deliverables  
+1. A Streamlit page (`log_workout.py`) for logging workouts, exercises, and series.
+2. A relational database schema:
+    - `workouts` table to track each workout session.
+    - `workout_exercises` table to associate exercises with workouts.
+    - `series` table to track series for each exercise.
+
+**Prompt for Copilot:**  
+"Create a Streamlit page for logging workouts. Allow users to:
+- Add a workout with a name, date, and notes.
+- Add multiple exercises to the workout, each with weight and notes.
+- Log series (sets) for each exercise with repetitions and associated weights. Save the data into relational tables: `workouts`, `workout_exercises`, and `series`."
+
+---
+
 ## Feature: Add Exercise
 
 ### Objective  
-Allow users to create exercises with relevant details, including an optional image, and save them to the cloud.
+Allow users to create predefined exercises with relevant details, including an optional image, and save them to the cloud.
 
 ### Requirements  
 - **Input Fields:**  
@@ -56,123 +98,74 @@ Allow users to create exercises with relevant details, including an optional ima
 
 ---
 
-## Feature: View Exercises
+## Feature: View Workouts and Exercises
 
 ### Objective  
-Enable users to view all created exercises in a simple interface.
+Enable users to view logged workouts and their associated exercises and series in a hierarchical format.
 
 ### Requirements  
 - **UI Elements:**  
-  - A list or grid showing the exercise name, type, description, and image.  
+  - List of workouts with name, date, and notes.  
+  - For each workout, show associated exercises with name, weight, and notes.  
+  - For each exercise, list its series (sets) with repetitions and weights.  
 
 - **Backend Integration:**  
-  - Fetch data from the `exercises` table in Supabase.  
+  - Fetch data from the `workouts`, `workout_exercises`, and `series` tables in Supabase.  
 
 ### Deliverables  
-1. A Streamlit page (`view_exercises.py`) for fetching and displaying exercise data.  
-2. Exercises displayed in a card or table format showing the name, type, description, and image.  
+1. A Streamlit page (`view_workouts.py`) for fetching and displaying workout data.  
+2. Hierarchical display format:
+    - Workouts > Exercises > Series.  
 
 **Prompt for Copilot:**  
-"Create a Streamlit page to view exercises. Fetch data from the Supabase `exercises` table and display it in a table or card format with exercise name, type, description, and day."
-
----
-
-## Feature: Log Workout
-
-### Objective  
-Allow users to log workout sessions by selecting an exercise and tracking repetitions, weights, and notes.
-
-### Requirements  
-- **Input Fields:**  
-  - Dropdown to select an exercise (populated from the `exercises` table).  
-  - Repetitions (number input, required).  
-  - Weight (number input, required).  
-  - Notes (text area, optional).  
-
-- **Backend Integration:**  
-  - Save workout logs to the `workout_logs` table in Supabase.  
-
-- **Validation:**  
-  - Ensure repetitions and weight are positive numbers.
-
-### Deliverables  
-1. A Streamlit page (`log_workout.py`) for logging workouts.  
-2. Dropdown dynamically populated with exercises from Supabase.  
-3. Logs saved to the `workout_logs` table with a timestamp.
-
-**Prompt for Copilot:**  
-"Create a Streamlit page for logging workouts. Include a dropdown populated with exercises from Supabase, and fields for repetitions, weight, and notes. Validate inputs and save the data to the `workout_logs` table."
+"Create a Streamlit page to view workouts. Display a list of workouts with associated exercises and their series. Fetch data from the `workouts`, `workout_exercises`, and `series` tables in Supabase."
 
 ---
 
 ## Feature: Dashboard
 
 ### Objective  
-Provide users with an overview of their logged workouts and progress trends.
+Provide users with an overview of their workout progress, including metrics on exercises and series logged over time.
 
 ### Requirements  
 - **Summary View:**  
-  - Display the latest logged workouts in a list format.  
-  - Include details such as exercise name, repetitions, and weight.  
+  - Display total workouts, exercises, and series logged.  
+  - Show metrics like average repetitions, total weight lifted, and most used exercises.  
 
 - **Visualization:**  
-  - Bar chart for total repetitions per exercise over the past week.  
-  - Line chart for weight progression over time for selected exercises.  
+  - Line chart for workout frequency over time.  
+  - Bar chart for total weight lifted per exercise.  
 
 - **Backend Integration:**  
-  - Fetch data from the `workout_logs` table in Supabase.  
-  - Aggregate data for charts (e.g., group logs by week and exercise).  
+  - Fetch data from the `workouts`, `workout_exercises`, and `series` tables.  
 
 ### Deliverables  
-1. A Streamlit page (`dashboard.py`) displaying recent workouts and progress visualizations.  
-2. Charts implemented using Streamlit’s charting options (e.g., `st.bar_chart` or `st.line_chart`).  
+1. A Streamlit page (`dashboard.py`) displaying workout metrics and visualizations.  
+2. Charts implemented using Streamlit’s charting options (e.g., `st.bar_chart`, `st.line_chart`).  
 
 **Prompt for Copilot:**  
-"Create a Streamlit dashboard to display recent workout logs and progress trends. Fetch data from the Supabase `workout_logs` table and display:
-- A list of recent workouts.
-- A bar chart for weekly repetitions per exercise.
-- A line chart for weight progression over time."
+"Create a Streamlit dashboard to display workout progress. Include metrics on total workouts, exercises, and series logged. Visualize workout frequency and total weight lifted using charts. Fetch data from the `workouts`, `workout_exercises`, and `series` tables in Supabase."
 
 ---
 
-## Feature: Edit/Delete Exercise
+## Feature: Edit/Delete Workout or Exercise
 
 ### Objective  
-Enable users to update or delete an existing exercise.
+Enable users to update or delete an existing workout, its exercises, or their series.
 
 ### Requirements  
 - **Edit:**  
-  - Allow users to update the exercise name, type, description, and image.  
-  - Replace the old image in Supabase storage if a new one is uploaded.  
+  - Allow users to update workout details (name, date, notes).
+  - Modify exercises in the workout (weight, notes).
+  - Update series (repetitions, weights).  
 
 - **Delete:**  
-  - Remove the exercise from the `exercises` table.  
-  - Delete the associated image from the `exercise-images` bucket.  
+  - Remove a workout and its associated exercises and series.  
+  - Remove an exercise and its series from a workout.  
 
 ### Deliverables  
-1. A Streamlit page (`edit_delete_exercise.py`) for handling edit and delete operations.  
+1. A Streamlit page (`edit_delete_workout.py`) for handling edit and delete operations.  
 2. Confirmation dialog for delete operations.  
 
 **Prompt for Copilot:**  
-"Create a Streamlit page for editing or deleting exercises. Include inputs to update fields like name, type, description, and image. Use Python to update the Supabase `exercises` table or delete an exercise and its image from the storage bucket. Include a confirmation dialog for deletions."
-
----
-
-## Feature: Authentication
-
-### Objective  
-Allow users to log in and sync their data securely.
-
-### Requirements  
-- **Signup/Login:**  
-  - Implement email/password authentication using Supabase.  
-
-- **Session Management:**  
-  - Persist user sessions using Supabase's built-in session handling.  
-
-### Deliverables  
-1. A Streamlit page (`auth.py`) for user authentication.  
-2. Session management to protect specific routes.  
-
-**Prompt for Copilot:**  
-"Create a Streamlit page for user signup and login using Supabase authentication. Implement session management to protect specific routes and ensure logged-in users can access their data."
+"Create a Streamlit page to edit or delete workouts and their associated exercises or series. Include inputs to update fields and provide confirmation dialogs for deletions. Use Python to update or delete data in the `workouts`, `workout_exercises`, and `series` tables."
