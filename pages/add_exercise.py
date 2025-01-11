@@ -7,11 +7,13 @@ from utils.supabase_client import supabase
 import io
 
 def main():
-    st.title('Add Exercise')
-
     # Button to navigate back to home page
     if st.button('Back to Home'):
         st.query_params(page='home')
+
+    st.title('Add Exercise')
+
+
 
     # Input fields
     name = st.text_input('Name', max_chars=100)
