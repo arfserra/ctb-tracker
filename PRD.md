@@ -1,28 +1,27 @@
-# Product Requirements Document: Exercise Tracker Mobile Web App
+# Product Requirements Document: Exercise Tracker Web App
 
 ## Foundation PRD
 
 ### Project Setup
 **Objective:**  
-Establish the foundational structure and tools for the exercise tracker mobile web app.  
+Establish the foundational structure and tools for the exercise tracker web app using Streamlit for a simple, web-based interface.  
 
 **Requirements:**  
-- Use **Vanilla JavaScript** as the framework for the web app.  
+- Use **Streamlit** for the UI framework to simplify development.  
 - Include **Supabase** for cloud storage and authentication.  
-- Use **Tailwind CSS** for styling.  
+- Use **Python** as the primary language for backend and logic.  
 - Add **environment variables** for storing Supabase credentials securely.
 
 **Deliverables:**  
-1. A project initialized with a basic HTML, CSS, and JavaScript setup.  
-2. A `supabaseClient.js` file that initializes the Supabase client with the project's URL and anon key.  
+1. A Streamlit app initialized with a basic structure.  
+2. A Python script (`supabase_client.py`) to initialize and manage the Supabase client with the project's URL and anon key.  
 3. A structured folder setup:
-   - `/components/` for reusable JavaScript components.
-   - `/pages/` for HTML templates or primary views (e.g., Dashboard, AddExercise).
-   - `/assets/` for static files (e.g., styles, images).
+   - `/pages/` for Streamlit pages (e.g., Dashboard, AddExercise).
    - `/utils/` for utility/helper functions.
+   - `/assets/` for static files if needed.
 
 **Prompt for Copilot:**  
-"Set up a project using Vanilla JavaScript with Tailwind CSS for styling. Install `@supabase/supabase-js` and configure Supabase in a `supabaseClient.js` file using environment variables. Organize folders as `components`, `pages`, `assets`, and `utils` for scalability."
+"Set up a Streamlit project for a web-based exercise tracker app. Create a Python file to initialize Supabase client using environment variables. Organize folders as `pages`, `utils`, and `assets` for scalability."
 
 ---
 
@@ -32,11 +31,11 @@ Establish the foundational structure and tools for the exercise tracker mobile w
 Allow users to create exercises with relevant details, including an optional image, and save them to the cloud.
 
 ### Requirements  
-- **Form Fields:**  
-  - Name (text, required).  
+- **Input Fields:**  
+  - Name (text input, required).  
   - Type (dropdown: Strength, Cardio, Mobility, required).  
-  - Description (textarea, optional).  
-  - Image (file input, optional).  
+  - Description (text area, optional).  
+  - Image (file uploader, optional).  
 
 - **Backend Integration:**  
   - Save exercise details to the `exercises` table in Supabase.  
@@ -48,38 +47,33 @@ Allow users to create exercises with relevant details, including an optional ima
   - Validate image size (<2 MB) and type (JPEG, PNG).
 
 ### Deliverables  
-1. A JavaScript file (`addExercise.js`) for handling form submission and integrating with Supabase.  
-2. An HTML template (`addExercise.html`) containing the form structure styled with Tailwind CSS.  
-3. Functionality to upload images to the storage bucket and link their URL to the exercise.  
-4. Form validation for required fields and image constraints.  
+1. A Streamlit page (`add_exercise.py`) for adding exercises.  
+2. Functionality to upload images to the storage bucket and link their URL to the exercise.  
+3. Validation for required fields and image constraints.  
 
 **Prompt for Copilot:**  
-"Create an HTML form styled with Tailwind CSS for adding exercises. Use Vanilla JavaScript to handle form submissions, validate input fields, and save exercise data to the Supabase `exercises` table. Implement image uploads to the `exercise-images` bucket and store the URL in the database."
+"Create a Streamlit page to add exercises. Include text inputs for name and description, a dropdown for type, and a file uploader for images. Use Python to validate inputs and save the data to Supabase's `exercises` table. Upload images to the `exercise-images` bucket and store the URL."
 
 ---
 
 ## Feature: View Exercises
 
 ### Objective  
-Enable users to view all created exercises in a clean and mobile-friendly interface.
+Enable users to view all created exercises in a simple interface.
 
 ### Requirements  
 - **UI Elements:**  
-  - A grid or list showing the exercise name, type, description, and image.  
+  - A list or grid showing the exercise name, type, description, and image.  
 
 - **Backend Integration:**  
   - Fetch data from the `exercises` table in Supabase.  
 
-- **UX Considerations:**  
-  - Ensure responsiveness for mobile devices.  
-
 ### Deliverables  
-1. A JavaScript file (`viewExercises.js`) for fetching and displaying exercise data.  
-2. An HTML template (`viewExercises.html`) containing a grid layout styled with Tailwind CSS.  
-3. Exercises displayed in a card format showing the name, type, description, and image.  
+1. A Streamlit page (`view_exercises.py`) for fetching and displaying exercise data.  
+2. Exercises displayed in a card or table format showing the name, type, description, and image.  
 
 **Prompt for Copilot:**  
-"Create an HTML page styled with Tailwind CSS to display exercises in a responsive grid. Use Vanilla JavaScript to fetch exercise data from the Supabase `exercises` table and populate the grid dynamically with cards showing the exercise name, type, description, and image."
+"Create a Streamlit page to view exercises. Fetch data from the Supabase `exercises` table and display it in a table or card format with exercise name, type, description, and image."
 
 ---
 
@@ -89,11 +83,11 @@ Enable users to view all created exercises in a clean and mobile-friendly interf
 Allow users to log workout sessions by selecting an exercise and tracking repetitions, weights, and notes.
 
 ### Requirements  
-- **Form Fields:**  
+- **Input Fields:**  
   - Dropdown to select an exercise (populated from the `exercises` table).  
-  - Repetitions (integer, required).  
-  - Weight (float, required).  
-  - Notes (textarea, optional).  
+  - Repetitions (number input, required).  
+  - Weight (number input, required).  
+  - Notes (text area, optional).  
 
 - **Backend Integration:**  
   - Save workout logs to the `workout_logs` table in Supabase.  
@@ -102,13 +96,12 @@ Allow users to log workout sessions by selecting an exercise and tracking repeti
   - Ensure repetitions and weight are positive numbers.
 
 ### Deliverables  
-1. A JavaScript file (`logWorkout.js`) for handling form submission and integrating with Supabase.  
-2. An HTML template (`logWorkout.html`) containing the form structure styled with Tailwind CSS.  
-3. Dropdown dynamically populated with exercises from Supabase.  
-4. Logs saved to the `workout_logs` table with a timestamp.
+1. A Streamlit page (`log_workout.py`) for logging workouts.  
+2. Dropdown dynamically populated with exercises from Supabase.  
+3. Logs saved to the `workout_logs` table with a timestamp.
 
 **Prompt for Copilot:**  
-"Create an HTML form styled with Tailwind CSS for logging workouts. Use Vanilla JavaScript to populate a dropdown with exercises from the Supabase `exercises` table, validate input fields, and save workout data to the `workout_logs` table."
+"Create a Streamlit page for logging workouts. Include a dropdown populated with exercises from Supabase, and fields for repetitions, weight, and notes. Validate inputs and save the data to the `workout_logs` table."
 
 ---
 
@@ -131,12 +124,11 @@ Provide users with an overview of their logged workouts and progress trends.
   - Aggregate data for charts (e.g., group logs by week and exercise).  
 
 ### Deliverables  
-1. A JavaScript file (`dashboard.js`) for fetching and displaying workout data.  
-2. An HTML template (`dashboard.html`) containing a summary view styled with Tailwind CSS.  
-3. Charts implemented using a library like Chart.js.  
+1. A Streamlit page (`dashboard.py`) displaying recent workouts and progress visualizations.  
+2. Charts implemented using Streamlit’s charting options (e.g., `st.bar_chart` or `st.line_chart`).  
 
 **Prompt for Copilot:**  
-"Create an HTML page styled with Tailwind CSS to display a workout summary dashboard. Use Vanilla JavaScript to fetch workout data from the Supabase `workout_logs` table and display:
+"Create a Streamlit dashboard to display recent workout logs and progress trends. Fetch data from the Supabase `workout_logs` table and display:
 - A list of recent workouts.
 - A bar chart for weekly repetitions per exercise.
 - A line chart for weight progression over time."
@@ -158,12 +150,11 @@ Enable users to update or delete an existing exercise.
   - Delete the associated image from the `exercise-images` bucket.  
 
 ### Deliverables  
-1. A JavaScript file (`editDeleteExercise.js`) for handling edit and delete operations.  
-2. An HTML template (`editDeleteExercise.html`) containing the interface styled with Tailwind CSS.  
-3. Confirmation dialog for delete operations.  
+1. A Streamlit page (`edit_delete_exercise.py`) for handling edit and delete operations.  
+2. Confirmation dialog for delete operations.  
 
 **Prompt for Copilot:**  
-"Create an HTML page styled with Tailwind CSS for editing or deleting exercises. Use Vanilla JavaScript to update exercise data in the Supabase `exercises` table or delete an exercise and its image from the storage bucket. Include a confirmation dialog for deletions."
+"Create a Streamlit page for editing or deleting exercises. Include inputs to update fields like name, type, description, and image. Use Python to update the Supabase `exercises` table or delete an exercise and its image from the storage bucket. Include a confirmation dialog for deletions."
 
 ---
 
@@ -180,9 +171,8 @@ Allow users to log in and sync their data securely.
   - Persist user sessions using Supabase's built-in session handling.  
 
 ### Deliverables  
-1. A JavaScript file (`auth.js`) for handling user authentication.  
-2. HTML templates (`login.html`, `signup.html`) containing forms styled with Tailwind CSS.  
-3. Authentication state management for protected routes.
+1. A Streamlit page (`auth.py`) for user authentication.  
+2. Session management to protect specific routes.  
 
 **Prompt for Copilot:**  
-"Create HTML forms styled with Tailwind CSS for user signup and login. Use Vanilla JavaScript to handle authentication with Supabase, manage user sessions, and protect specific routes."
+"Create a Streamlit page for user signup and login using Supabase authentication. Implement session management to protect specific routes and ensure logged-in users can access their data."
