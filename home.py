@@ -14,7 +14,7 @@ if page == 'home':
 
     # Button to navigate to add_exercise page
     if st.button('Add Exercise'):
-        st.experimental_set_query_params(page='add_exercise')
+        st.query_params(page='add_exercise')
 
     # Example: Fetch data from Supabase
     from utils.supabase_client import supabase
