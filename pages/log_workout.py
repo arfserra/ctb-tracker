@@ -26,8 +26,21 @@ def main():
     if 'workout' not in st.session_state:
         st.session_state['workout'] = {'exercises': []}
 
+    # Initialize session state for weight conversion
+    if 'weight_kg' not in st.session_state:
+        st.session_state['weight_kg'] = 0.0
+    if 'weight_lb' not in st.session_state:
+        st.session_state['weight_lb'] = 0.0
+
+    # Callback functions for weight conversion
+    def kg_to_lb():
+        st.session_state.weight_lb = st.session_state.weight_kg * 2.20462
+
+    def lb_to_kg():
+        st.session_state.weight_kg = st.session_state.weight_lb / 2.20462
+
     # Select day
-    day = st.radio('Select Day', ['A', 'B', 'Rest'])
+    day = st.radio('Select Day', ['A', 'B', 'Rest'], horizontal=True)
 
     # Filter exercises by selected day
     filtered_exercises = [exercise for exercise in exercises if exercise.get('day') == day]
@@ -44,17 +57,22 @@ def main():
             st.write(f"Description: {selected_exercise_data.get('description', 'No Description')}")
 
     # Input fields for weight and series
-    weight = st.number_input('Weight (kg)', min_value=0.0, step=0.1)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.number_input('Weight (kg)', min_value=0.0, step=2.26796, key='weight_kg', on_change=kg_to_lb)  # 5 lb in kg
+    with col2:
+        st.number_input('Weight (lb)', min_value=0.0, step=5.0, key='weight_lb', on_change=lb_to_kg)
+    
     repetitions = st.number_input('Repetitions', min_value=1, step=1)
 
     if st.button('Add Series'):
-        if not selected_exercise or repetitions <= 0 or weight < 0:
+        if not selected_exercise or repetitions <= 0 or st.session_state['weight_kg'] < 0:
             st.error('Please fill in all fields correctly.')
         else:
             # Add series to the selected exercise
             exercise_entry = next((exercise for exercise in st.session_state['workout']['exercises'] if exercise['name'] == selected_exercise), None)
             if not exercise_entry:
-                exercise_entry = {'name': selected_exercise, 'weight': weight, 'series': []}
+                exercise_entry = {'name': selected_exercise, 'weight': st.session_state['weight_kg'], 'series': []}
                 st.session_state['workout']['exercises'].append(exercise_entry)
             exercise_entry['series'].append({'repetitions': repetitions})
             st.success('Series added to exercise!')
@@ -62,7 +80,9 @@ def main():
     # Display current workout
     st.subheader('Current Workout')
     for i, exercise in enumerate(st.session_state['workout']['exercises']):
-        st.write(f"{i+1}. {exercise['name']} - Weight: {exercise['weight']} kg")
+        weight_kg = exercise['weight']
+        weight_lb = weight_kg * 2.20462
+        st.write(f"{i+1}. {exercise['name']} - Weight: {weight_kg:.2f} kg / {weight_lb:.2f} lb")
         for j, serie in enumerate(exercise['series']):
             st.write(f"  Series {j+1}: {serie['repetitions']} repetitions")
 
