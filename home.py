@@ -66,22 +66,23 @@ page = st.query_params.get('page', ['home'])[0]
 if page == 'home':
     st.title('Exercise Tracker')
 
-    # Button to navigate to view_exercises page
-    if st.button('View Exercises'):
-        st.query_params = {'page': 'view_exercises'}
-
-    # Button to navigate to log_workout page
-    if st.button('Log Workout'):
-        st.query_params = {'page': 'log_workout'}
+        # Buttons to navigate to other pages, side by side
+    col1, col2 = st.columns(2)
+    with col1:
+            if st.button('Log Workout', type="primary", use_container_width=True):
+                st.query_params = {'page': 'log_workout'}
+    with col2:
+            if st.button('View Exercises', type="secondary", use_container_width=True):
+                st.query_params = {'page': 'view_exercises'}
 
     # Display the last 5 workouts
     st.subheader('Last 5 Workouts')
     workouts = fetch_last_workouts()
     if workouts:
         for workout in workouts:
-            st.write(f"{workout['day']}")
+            st.markdown(f"<span style='color: #ebbe4d; font-weight: bold;'>{workout['day']}</span>", unsafe_allow_html=True)
             for exercise in workout['exercises']:
-                st.write(f"- {exercise['name']} (Day: {exercise['day']}), **Series:** {exercise['series']}, **Max:** {exercise['weight_kg']} kg / {exercise['weight_lb']} lb")
+                st.write(f"- {exercise['day']}*{exercise['name']}, **Series:** {exercise['series']}, **Max:** {exercise['weight_kg']} kg / {exercise['weight_lb']} lb")
             st.write("---")
     else:
         st.write("No workouts found.")
