@@ -7,6 +7,7 @@ import streamlit as st
 from pages import add_exercise
 from pages import view_exercises
 from pages import log_workout
+from pages import auth
 from utils.supabase_client import supabase
 from datetime import datetime
 
@@ -61,19 +62,27 @@ def fetch_last_workouts():
         return []
 
 # Get the current page from query params
-page = st.query_params.get('page', ['home'])[0]
+page = st.query_params.get('page', 'home')
 
 if page == 'home':
     st.title('Exercise Tracker')
 
-        # Buttons to navigate to other pages, side by side
+    # Check if user is logged in
+    if 'user' not in st.session_state:
+        st.warning('Please log in to access the app.')
+        st.query_params['page'] = 'auth'
+        st.rerun()
+
+    # Buttons to navigate to other pages, side by side
     col1, col2 = st.columns(2)
     with col1:
-            if st.button('Log Workout', type="primary", use_container_width=True):
-                st.query_params = {'page': 'log_workout'}
+        if st.button('Log Workout', type="primary", use_container_width=True):
+            st.query_params['page'] = 'log_workout'
+            st.rerun()
     with col2:
-            if st.button('View Exercises', type="secondary", use_container_width=True):
-                st.query_params = {'page': 'view_exercises'}
+        if st.button('View Exercises', type="secondary", use_container_width=True):
+            st.query_params['page'] = 'view_exercises'
+            st.rerun()
 
     # Display the last 5 workouts
     st.subheader('Last 5 Workouts')
@@ -82,7 +91,7 @@ if page == 'home':
         for workout in workouts:
             st.markdown(f"<span style='color: #ebbe4d; font-weight: bold;'>{workout['day']}</span>", unsafe_allow_html=True)
             for exercise in workout['exercises']:
-                st.write(f"- {exercise['day']}*{exercise['name']}, **Series:** {exercise['series']}, **Max:** {exercise['weight_kg']} kg / {exercise['weight_lb']} lb")
+                st.markdown(f"<p style='color:green;'>- {exercise['name']} (Day: {exercise['day']}), <b>Series:</b> {exercise['series']}, <b>Max:</b> {exercise['weight_kg']} kg / {exercise['weight_lb']} lb</p>", unsafe_allow_html=True)
             st.write("---")
     else:
         st.write("No workouts found.")
@@ -93,3 +102,5 @@ elif page == 'view_exercises':
     view_exercises.main()
 elif page == 'log_workout':
     log_workout.main()
+elif page == 'auth':
+    auth.main()

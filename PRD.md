@@ -1,5 +1,6 @@
 # Product Requirements Document: Exercise Tracker Web App
 
+
 ## Foundation PRD
 
 ### Project Setup

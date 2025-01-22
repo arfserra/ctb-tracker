@@ -8,6 +8,13 @@ from utils.supabase_client import supabase
 def main():
     st.title('Log Workout')
 
+    # Check if user is logged in
+    if 'user' not in st.session_state:
+        st.warning('Please log in to access this page.')
+        st.query_params['page'] = 'auth'
+        st.rerun()
+        return
+
     # Fetch exercises from Supabase
     try:
         response = supabase.table('exercises').select('*').execute()
@@ -129,7 +136,7 @@ def main():
                 st.success('Workout logged successfully!')
                 # Clear workout
                 st.session_state['workout'] = {'exercises': []}
-                st.query_params = {'page': 'log_workout'}
+                st.query_params = {'page': 'home'}
 
             except Exception as e:
                 st.error(f'An error occurred: {str(e)}')
